@@ -1,16 +1,22 @@
-# login_signup
+# Human Safety App (SafeShake)
 
-A new Flutter project.
+A **Flutter + Firebase** safety app that shows live location on Google Maps, warns if you enter predefined **danger zones**, and lets you **triple-shake** your phone to quickly open the dialer to call the nearest police station (via Google Places API). If no station is found, the app falls back to **999** (you can change this to your country’s emergency number).
 
-## Getting Started
+---
 
-This project is a starting point for a Flutter application.
+## 🚀 Features
+- Firebase **Email/Password Auth**
+- **Google Maps** integration with live location
+- **Danger Zone alerts** (radius detection + red/yellow circles)
+- **Triple-shake gesture** within 1.5s → call nearest police
+- **Manual emergency call button**
+- Configurable fallback number (default: `999`)
 
-A few resources to get you started if this is your first Flutter project:
+---
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+## 🛠 Tech Stack
+- Flutter (Dart)
+- Firebase Auth
+- Google Maps SDK for Android
+- Places API (nearest police)
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
