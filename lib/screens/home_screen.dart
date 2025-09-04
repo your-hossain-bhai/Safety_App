@@ -16,18 +16,19 @@ class _HomeScreenState extends State<HomeScreen> {
     setState(() {
       _isLoading = true;
     });
-
     try {
       await _authService.signOut();
-      // Navigation will be handled by auth state changes in main.dart
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Error signing out: ${e.toString()}')),
-      );
+      if (!mounted) return;
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text('Error signing out: $e')));
     } finally {
-      setState(() {
-        _isLoading = false;
-      });
+      if (mounted) {
+        setState(() {
+          _isLoading = false;
+        });
+      }
     }
   }
 
@@ -60,17 +61,12 @@ class _HomeScreenState extends State<HomeScreen> {
               style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 16),
-            Text(
-              'You are logged in as: ${user?.email ?? 'Unknown'}',
-              style: const TextStyle(fontSize: 16),
-              textAlign: TextAlign.center,
-            ),
+            Text('You are logged in as: ${user?.email ?? 'Unknown'}'),
             const SizedBox(height: 32),
-            ElevatedButton(
-              onPressed: _isLoading ? null : _signOut,
-              child: _isLoading
-                  ? const CircularProgressIndicator()
-                  : const Text('Sign Out'),
+            ElevatedButton.icon(
+              onPressed: () => Navigator.pushNamed(context, '/safety'),
+              icon: const Icon(Icons.shield),
+              label: const Text('Open Safety'),
             ),
           ],
         ),

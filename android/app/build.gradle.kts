@@ -1,7 +1,6 @@
 plugins {
     id("com.android.application")
-    id("kotlin-android")
-    
+    id("org.jetbrains.kotlin.android")
     id("dev.flutter.flutter-gradle-plugin")
     id("com.google.gms.google-services")
 }
@@ -9,17 +8,6 @@ plugins {
 android {
     namespace = "com.example.login_signup"
     compileSdk = flutter.compileSdkVersion
-
-    
-    ndkVersion = "27.0.12077973"
-
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
-    }
-    kotlinOptions {
-        jvmTarget = JavaVersion.VERSION_11.toString()
-    }
 
     defaultConfig {
         applicationId = "com.example.login_signup"
@@ -29,11 +17,31 @@ android {
         versionName = flutter.versionName
     }
 
+    // Use Java 17 for AGP/Gradle 8.x
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
+    }
+    kotlinOptions {
+        jvmTarget = "17"
+    }
+
     buildTypes {
         release {
+            // For demo/dev builds keep shrinking OFF
+            isMinifyEnabled = false
+            isShrinkResources = false   // <- Kotlin DSL uses isShrinkResources
+
             signingConfig = signingConfigs.getByName("debug")
         }
+        debug {
+            isMinifyEnabled = false
+            isShrinkResources = false
+        }
     }
+
+    // If you previously added NDK, remove it unless you really need it:
+    // ndkVersion = "27.0.12077973"
 }
 
 flutter {
@@ -41,5 +49,5 @@ flutter {
 }
 
 dependencies {
-  
+    // Flutter plugins from pubspec.yaml are enough
 }
