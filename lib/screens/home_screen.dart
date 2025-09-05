@@ -16,13 +16,16 @@ class _HomeScreenState extends State<HomeScreen> {
     setState(() {
       _isLoading = true;
     });
+
     try {
       await _authService.signOut();
+    
     } catch (e) {
-      if (!mounted) return;
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(SnackBar(content: Text('Error signing out: $e')));
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Error signing out: $e')),
+        );
+      }
     } finally {
       if (mounted) {
         setState(() {
@@ -56,17 +59,40 @@ class _HomeScreenState extends State<HomeScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            
+            Image.asset(
+              'lib/assets/images/safeshake_logo.jpg',
+              height: 120,
+            ),
+            const SizedBox(height: 24),
+
             const Text(
-              'Welcome!',
+              'Welcome to SafeShake!',
               style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 16),
-            Text('You are logged in as: ${user?.email ?? 'Unknown'}'),
+
+            Text(
+              'You are logged in as:\n${user?.email ?? 'Unknown'}',
+              style: const TextStyle(fontSize: 16),
+              textAlign: TextAlign.center,
+            ),
             const SizedBox(height: 32),
+
             ElevatedButton.icon(
-              onPressed: () => Navigator.pushNamed(context, '/safety'),
-              icon: const Icon(Icons.shield),
-              label: const Text('Open Safety'),
+              onPressed: () {
+                Navigator.pushNamed(context, '/safety');
+              },
+              icon: const Icon(Icons.security),
+              label: const Text('Go to Safety Screen'),
+            ),
+            const SizedBox(height: 24),
+
+            ElevatedButton(
+              onPressed: _isLoading ? null : _signOut,
+              child: _isLoading
+                  ? const CircularProgressIndicator()
+                  : const Text('Sign Out'),
             ),
           ],
         ),
