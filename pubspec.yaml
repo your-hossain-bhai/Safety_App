@@ -5,21 +5,17 @@ publish_to: 'none'
 version: 1.0.0+1
 
 environment:
-  sdk: ">=3.3.0 <4.0.0"   # ✅ works on current Flutter/Dart
-  # If you're on Flutter 3.24+ (Dart 3.5), you may set: ">=3.5.0 <4.0.0"
+  sdk: ">=3.3.0 <4.0.0"
 
 dependencies:
   flutter:
     sdk: flutter
-
   cupertino_icons: ^1.0.8
   firebase_core: ^4.0.0
   firebase_auth: ^6.0.1
-
-  # Maps + Location + Shake + Dialer + HTTP
   google_maps_flutter: ^2.6.1
   geolocator: ^12.0.0
-  sensors_plus: ^6.1.2        # ✅ updated
+  sensors_plus: ^6.1.2
   url_launcher: ^6.3.0
   http: ^1.2.2
   permission_handler: ^11.3.1
@@ -32,5 +28,9 @@ dev_dependencies:
 flutter:
   uses-material-design: true
   assets:
+<<<<<<< HEAD
     - assets/whatsapp_logo.jpg
 
+=======
+    - lib/assets/images/safeshake_logo.jpg
+>>>>>>> 7ddd0ef539af3e51496d03548bbf488f7d64c6c4

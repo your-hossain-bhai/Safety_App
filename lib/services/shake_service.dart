@@ -1,44 +1,40 @@
 import 'dart:async';
-import 'dart:math';
+import 'dart:math' as math;
 import 'package:sensors_plus/sensors_plus.dart';
 
 class ShakeService {
-  final _controller = StreamController<bool>.broadcast();
-  Stream<bool> get tripleShakeStream => _controller.stream;
+  final double threshold; 
+  final int debounceMs;
 
-  static const double _shakeThresholdG = 2.2; // দরকার হলে টিউন করো
-  static const int _windowMs = 1500; // 1.5s উইন্ডোতে 3 বার শেক
+  StreamSubscription<AccelerometerEvent>? _sub;
+  int _lastMs = 0;
 
-  int _count = 0;
-  int _windowStart = DateTime.now().millisecondsSinceEpoch;
-  StreamSubscription? _sub;
+  final _shakeController = StreamController<void>.broadcast();
+  Stream<void> get tripleShakeStream => _shakeController.stream;
 
-  ShakeService() {
-    _sub = accelerometerEvents.listen(_onData);
+  ShakeService({this.threshold = 18.0, this.debounceMs = 800});
+
+  void start() {
+    _sub?.cancel();
+    _sub = accelerometerEventStream().listen((e) {
+      final gForce = math.sqrt(e.x * e.x + e.y * e.y + e.z * e.z);
+      if (gForce >= threshold) {
+        final now = DateTime.now().millisecondsSinceEpoch;
+        if (now - _lastMs > debounceMs) {
+          _lastMs = now;
+          _shakeController.add(null); // void event
+        }
+      }
+    });
   }
 
-  void _onData(AccelerometerEvent e) {
-    final gX = e.x / 9.80665, gY = e.y / 9.80665, gZ = e.z / 9.80665;
-    final gForce = sqrt(gX * gX + gY * gY + gZ * gZ);
-    final now = DateTime.now().millisecondsSinceEpoch;
-
-    if (now - _windowStart > _windowMs) {
-      _windowStart = now;
-      _count = 0;
-    }
-
-    if (gForce > _shakeThresholdG) {
-      _count++;
-      if (_count >= 3) {
-        _controller.add(true);
-        _count = 0;
-        _windowStart = now;
-      }
-    }
+  void stop() {
+    _sub?.cancel();
+    _sub = null;
   }
 
   void dispose() {
-    _sub?.cancel();
-    _controller.close();
+    stop();
+    _shakeController.close();
   }
 }

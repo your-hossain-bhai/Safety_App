@@ -14,6 +14,7 @@ class _SignupScreenState extends State<SignupScreen> {
   final _passwordController = TextEditingController();
   final _confirmPasswordController = TextEditingController();
   final _authService = AuthService();
+
   bool _isLoading = false;
   String? _errorMessage;
 
@@ -39,19 +40,16 @@ class _SignupScreenState extends State<SignupScreen> {
         _passwordController.text.trim(),
       );
     } catch (e) {
-      setState(() {
-        _errorMessage = e.toString();
-      });
+      setState(() => _errorMessage = e.toString());
     } finally {
-      setState(() {
-        _isLoading = false;
-      });
+      if (mounted) setState(() => _isLoading = false);
     }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+<<<<<<< HEAD
       appBar: AppBar(
         title: const Text('Sign Up'),
         backgroundColor: Colors.white,
@@ -69,6 +67,21 @@ class _SignupScreenState extends State<SignupScreen> {
                 Image.asset(
                   "assets/whatsapp_logo.jpg",
                   height: 220, // Increased height for larger logo
+=======
+      appBar: AppBar(title: const Text('Sign Up')),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Form(
+          key: _formKey,
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                // ✅ SafeShake logo
+                Image.asset(
+                  'lib/assets/images/safeshake_logo.jpg',
+                  height: 120,
+>>>>>>> 7ddd0ef539af3e51496d03548bbf488f7d64c6c4
                 ),
                 const SizedBox(height: 24),
 
@@ -130,6 +143,7 @@ class _SignupScreenState extends State<SignupScreen> {
                 const SizedBox(height: 16),
 
                 if (_errorMessage != null)
+<<<<<<< HEAD
                   Text(_errorMessage!,
                       style: const TextStyle(color: Colors.red)),
                 const SizedBox(height: 16),
@@ -148,6 +162,24 @@ class _SignupScreenState extends State<SignupScreen> {
                         ? const CircularProgressIndicator(
                             valueColor:
                                 AlwaysStoppedAnimation<Color>(Colors.white),
+=======
+                  Text(
+                    _errorMessage!,
+                    style: const TextStyle(color: Colors.red),
+                    textAlign: TextAlign.center,
+                  ),
+
+                const SizedBox(height: 16),
+                SizedBox(
+                  width: double.infinity,
+                  child: ElevatedButton(
+                    onPressed: _isLoading ? null : _signUp,
+                    child: _isLoading
+                        ? const SizedBox(
+                            width: 20,
+                            height: 20,
+                            child: CircularProgressIndicator(strokeWidth: 2),
+>>>>>>> 7ddd0ef539af3e51496d03548bbf488f7d64c6c4
                           )
                         : const Text('Sign Up'),
                   ),
@@ -155,9 +187,13 @@ class _SignupScreenState extends State<SignupScreen> {
                 const SizedBox(height: 16),
 
                 TextButton(
+<<<<<<< HEAD
                   onPressed: () {
                     Navigator.pop(context);
                   },
+=======
+                  onPressed: () => Navigator.pop(context),
+>>>>>>> 7ddd0ef539af3e51496d03548bbf488f7d64c6c4
                   child: const Text('Already have an account? Login'),
                 ),
               ],
