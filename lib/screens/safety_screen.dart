@@ -112,6 +112,18 @@ class _SafetyScreenState extends State<SafetyScreen> {
       appBar: AppBar(title: const Text('Safety')),
       body: Stack(
         children: [
+          // Add logo at the top center
+          Positioned(
+            top: 30,
+            left: 0,
+            right: 0,
+            child: Center(
+              child: Image.asset(
+                'assets/logo.jpg',
+                height: 80,
+              ),
+            ),
+          ),
           // Show the map even if we don't have a fix yet
           GoogleMap(
             initialCameraPosition: initialCamera,

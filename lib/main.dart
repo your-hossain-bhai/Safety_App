@@ -52,7 +52,7 @@ class AuthWrapper extends StatelessWidget {
         if (snapshot.hasData) {
           return const HomeScreen();
         }
-        return const LoginScreen();
+        return const LoginScreen(); // default to LoginScreen
       },
     );
   }
